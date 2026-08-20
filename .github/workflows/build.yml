@@ -73,10 +73,15 @@ jobs:
             }
       
       - name: Delete release
-        if: ${{ steps.checkReleaseVersion.outputs.ALREADY_RELEASE == '2' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release delete "${{ steps.pullFridaLatestRelease.outputs.FRIDA_VERSION }}" --yes --cleanup-tag
+        run: |
+          FRIDA_VERSION="${{ steps.pullFridaLatestRelease.outputs.FRIDA_VERSION }}"
+          if gh release view "$FRIDA_VERSION" >/dev/null 2>&1; then
+            gh release delete "$FRIDA_VERSION" --yes --cleanup-tag
+          else
+            echo "no existing release $FRIDA_VERSION to delete"
+          fi
 
   create_release:
     needs: check_version
