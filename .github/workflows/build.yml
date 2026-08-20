@@ -20,6 +20,8 @@ jobs:
       FRIDA_VERSION: ${{ steps.pullFridaLatestRelease.outputs.FRIDA_VERSION }}
       ALREADY_RELEASE: ${{ steps.checkReleaseVersion.outputs.ALREADY_RELEASE }}
     steps:
+      - uses: actions/checkout@v4
+
       - name: Pull Frida Latest Release
         id: pullFridaLatestRelease
         uses: actions/github-script@v7
