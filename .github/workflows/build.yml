@@ -24,16 +24,8 @@ jobs:
         id: pullFridaLatestRelease
         uses: actions/github-script@v7
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const releaseResponse = await github.rest.repos.getLatestRelease({
-              owner: 'frida',
-              repo: 'frida',
-            })
-            const {
-              data: { tag_name: ver }
-            } = releaseResponse;
-            core.setOutput('FRIDA_VERSION', ver);
+            core.setOutput('FRIDA_VERSION', '17.17.0');
 
       - name: Split Repository Name
         id: split_name
@@ -149,7 +141,7 @@ jobs:
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         echo "ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT"
         
-        git clone --recurse-submodules https://github.com/frida/frida
+        git clone --branch 17.17.0 --recurse-submodules https://github.com/frida/frida
         cd frida
         for path in ../patches/*
         do
